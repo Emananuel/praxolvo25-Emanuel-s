@@ -79,14 +79,28 @@ router.put('/:id', (req, res) => {
         }
         product.price = parseFloat(price);
     }
-
+    
     res.status(200).json(product);
 });
 
+// DELETE /products/:id - Delete a product by ID
+router.delete('/:id', (req, res) => {
+// Validar que el id sea un número válido
+        const id = parseInt(req.params.id);
+        if (isNaN(id) || id <= 0) {
+            return res.status(400).json({ error: 'Este id no es válido.' });
+        }
+    
+// Buscar el índice del producto
+        const productIndex = products.findIndex(p => p.id === id);
+        if (productIndex === -1) {
+            return res.status(404).json({ error: 'Producto no encontrado.' });
+        }
+    
+// Eliminar el producto
+        products.splice(productIndex, 1);
+        res.status(200).json({ message: 'Productp eliminado exitosamente.' });
+    });
 
-
-/**
- * Were missing some routes here...
- */
 
 module.exports = router;
